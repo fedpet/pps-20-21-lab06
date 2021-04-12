@@ -1,8 +1,8 @@
 package u06lab.solution
 
-import org.junit.jupiter.api.Assertions.{assertEquals, assertTrue}
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import u06lab.solution.TicTacToe.{Board, Game, Mark, O, X, computeAnyGame, find, placeAnyMark, winner}
+import u06lab.solution.TicTacToe.{Game, Mark, O, X, find, placeAnyMark, winner}
 
 class TicTacToeTest {
   @Test def testFind(): Unit = {
