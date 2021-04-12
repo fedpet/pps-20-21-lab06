@@ -58,13 +58,3 @@ object Combiners {
     override def combine(a: Int, b: Int): Int = scala.math.max(a, b)
   }
 }
-
-object TryFunctions extends App {
-  val f: Functions = FunctionsImpl
-  println(f.sum(List(10.0,20.0,30.1))) // 60.1
-  println(f.sum(List()))                // 0.0
-  println(f.concat(Seq("a","b","c")))   // abc
-  println(f.concat(Seq()))              // ""
-  println(f.max(List(-10,3,-5,0)))      // 3
-  println(f.max(List()))                // -2147483648
-}
