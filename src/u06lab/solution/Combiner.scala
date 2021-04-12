@@ -11,13 +11,16 @@ trait Functions {
   def max(a: List[Int]): Int // gives Int.MinValue if a is empty
 }
 
+
 object FunctionsImpl extends Functions {
+  def combine[A](a:Iterable[A])(implicit combiner: Combiner[A]): A = a.foldLeft(combiner.unit)(combiner.combine)
 
-  override def sum(a: List[Double]): Double = a.sum
+  import Combiners._
+  override def sum(a: List[Double]): Double = combine(a)
 
-  override def concat(a: Seq[String]): String = a.foldLeft("")((s1,s2) => s1 + s2)
+  override def concat(a: Seq[String]): String = combine(a)
 
-  override def max(a: List[Int]): Int = a.maxOption.getOrElse(Int.MinValue)
+  override def max(a: List[Int]): Int = combine(a)
 }
 
 
@@ -37,6 +40,23 @@ object FunctionsImpl extends Functions {
 trait Combiner[A] {
   def unit: A
   def combine(a: A, b: A): A
+}
+
+object Combiners {
+  implicit val doubleSumCombiner: Combiner[Double] = new Combiner[Double] {
+    override def unit: Double = 0
+    override def combine(a: Double, b: Double): Double = a+b
+  }
+
+  implicit val stringConcatCombiner: Combiner[String] = new Combiner[String] {
+    override def unit: String = ""
+    override def combine(a: String, b: String): String = a+b
+  }
+
+  implicit val intMaxCombiner: Combiner[Int] = new Combiner[Int] {
+    override def unit: Int = Int.MinValue
+    override def combine(a: Int, b: Int): Int = scala.math.max(a, b)
+  }
 }
 
 object TryFunctions extends App {
