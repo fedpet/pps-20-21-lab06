@@ -13,7 +13,8 @@ trait Functions {
 
 
 object FunctionsImpl extends Functions {
-  def combine[A](a:Iterable[A])(implicit combiner: Combiner[A]): A = a.foldLeft(combiner.unit)(combiner.combine)
+  //def combine[A](a:Iterable[A])(implicit combiner: Combiner[A]): A = a.foldLeft(combiner.unit)(combiner.combine)
+  def combine[A : Combiner](a:Iterable[A]): A = a.foldLeft(implicitly[Combiner[A]].unit)(implicitly[Combiner[A]].combine)
 
   import Combiners._
   override def sum(a: List[Double]): Double = combine(a)
